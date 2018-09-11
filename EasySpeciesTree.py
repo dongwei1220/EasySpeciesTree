@@ -4,7 +4,7 @@
 # @Contanct: "1369852697@qq.com"
 # @Time: "2018-06-04"
 # @Version = "Version 1.0"
-# @Discripton: "This script was designed to construct the species tree based on the single-copy gene obtained from the OrthoFinder results."
+# @Discripton: "This script was designed to easily construct the species tree based on the single-copy genes obtained from the OrthoFinder results."
 
 #import sys
 #import os.path as op
@@ -17,12 +17,12 @@ import subprocess
 
 ############### MODIFY THE FOLLWINGS PATHS FOR ALL DEPENDENT PROGRAMS ###############
 MAFFT = '/usr/local/bin/mafft'
-RAxML = '/Users/liang/Desktop/RAxML-master/raxmlHPC-PTHREADS'
-ASTRAL = '/Users/liang/desktop/ASTRAL/astral.5.6.2.jar'
+RAxML = '/Users/Davey/Desktop/RAxML-master/raxmlHPC-PTHREADS'
+ASTRAL = '/Users/Davey/Desktop/ASTRAL/astral.5.6.2.jar'
 TRIMAL = '/usr/local/bin/trimal'
 #####################################################################################
 
-#SpeciesID = ["Aco","Musa","VIT","Potri","AT"] #offer all abbreviated species id information
+#SpeciesID = ["AT","Potri","VIT","LOC_Os","Bradi","scaffold"] #offer all abbreviated species id information
 SpeciesID = []
 SingleOrtho = []
 SingleGeneID = []
