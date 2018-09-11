@@ -30,7 +30,7 @@ mydict1 = OrderedDict()
 mydict2 = OrderedDict()
 mydict3 = OrderedDict()
 OrthoDict = OrderedDict()
-thread = 10 #number of threads
+thread = 12 #number of threads
 nb = 100 #number of bootstraps
 model = "PROTGAMMAJTT" #model of Amino Acid substitution
 
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 %(prog)s [SpeciesID prefix] [SingleCopyOrtho] [Orthogroups] [all protein file]
 Author: Wei Dong <1369852697@qq.com>, FAFU
 Version: V1.0
-Easy construct the ML species tree with all single-copy gene's protein sequences''')
+Easily construct the ML species tree with all single-copy gene's protein sequences''')
     parser.add_argument(
     	'-in1', '--input1', 
     	required=True, 
