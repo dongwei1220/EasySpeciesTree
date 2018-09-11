@@ -1,2 +1,2 @@
 # EasySpeciesTree
-Easily construct the ML species tree with single-copy gene shared by different species
+Easily construct the ML species tree with all single-copy genes shared by different species
