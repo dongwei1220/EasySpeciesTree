@@ -4,7 +4,7 @@
 # @Contanct: "1369852697@qq.com"
 # @Time: "2018-06-04"
 # @Version = "Version 1.0"
-# @Discripton: "This script was designed to easily construct the species tree based on the single-copy genes obtained from the OrthoFinder results."
+# @Discripton: "This script was designed to easily construct the species tree based on the single-copy gene obtained from the OrthoFinder results."
 
 #import sys
 #import os.path as op
@@ -22,7 +22,7 @@ ASTRAL = '/Users/Davey/Desktop/ASTRAL/astral.5.6.2.jar'
 TRIMAL = '/usr/local/bin/trimal'
 #####################################################################################
 
-#SpeciesID = ["AT","Potri","VIT","LOC_Os","Bradi","scaffold"] #offer all abbreviated species id information
+#SpeciesID = ["Aco","Musa","VIT","Potri","AT"] #offer all abbreviated species id information
 SpeciesID = []
 SingleOrtho = []
 SingleGeneID = []
@@ -30,9 +30,9 @@ mydict1 = OrderedDict()
 mydict2 = OrderedDict()
 mydict3 = OrderedDict()
 OrthoDict = OrderedDict()
-thread = 12 #number of threads
-nb = 100 #number of bootstraps
-model = "PROTGAMMAJTT" #model of Amino Acid substitution
+thread = ""
+nb = ""
+model = ""
 
 # get every species abbreviated id information
 def get_SpeciesID(speciesID):
@@ -145,7 +145,7 @@ def MLtree_Concatenation():
 	'''
 	os.mkdir("Concatenation")
 	os.chdir("Concatenation")
-	cmd = RAxML + ' -T ' + str(thread) + ' -f a -N ' + str(nb) + ' -m ' + model + ' -x 123456 -p 123456 -s ../SingleGene_MSA/merged_allSingleGenes.fas -n concatenation_out.nwk'
+	cmd = RAxML + ' -T ' + thread + ' -f a -N ' + nb + ' -m ' + model + ' -x 123456 -p 123456 -s ../SingleGene_MSA/merged_allSingleGenes.fas -n concatenation_out.nwk'
 	run_command(cmd)
 	os.chdir("../")
 
@@ -160,7 +160,7 @@ def MLtree_Coalescence(SingleGeneIDs):
 		seq_aln_file = items[0] + "_aln.fas"
 		seq_aln_trimed_file = items[0] + "_aln_trimed.fas"
 		out_tree_file = items[0] + "_out.nwk"
-		cmd1 = RAxML + ' -T ' + str(thread) + ' -f a -N ' + str(nb) + ' -m ' + model + ' -x 123456 -p 123456 -s ../SingleGene_MSA/' + seq_aln_trimed_file + ' -n ' + out_tree_file
+		cmd1 = RAxML + ' -T ' + thread + ' -f a -N ' + nb + ' -m ' + model + ' -x 123456 -p 123456 -s ../SingleGene_MSA/' + seq_aln_trimed_file + ' -n ' + out_tree_file
 		run_command(cmd1)
 		cmd2 = 'cat RAxML_bipartitions.' + out_tree_file + ' >>allSingleGenes_tree.nwk'
 		#os.system('cat ' + out_tree_file + ' >>allSingleGenes_tree.nwk')
@@ -171,7 +171,7 @@ def MLtree_Coalescence(SingleGeneIDs):
 		#cmd = 'echo ./' + out_tree_file + ' >>allSingleGenes_bootstrap.txt'
 		run_command(cmd3)
 
-	cmd4 = 'java -jar ' + ASTRAL +' -i allSingleGenes_tree.nwk -b allSingleGenes_bootstrap.txt -r ' + str(nb) + ' -o Astral.coalescent_out.result'
+	cmd4 = 'java -jar ' + ASTRAL +' -i allSingleGenes_tree.nwk -b allSingleGenes_bootstrap.txt -r ' + nb + ' -o Astral.coalescent_out.result'
 	run_command(cmd4)
 	os.system('tail -n 1 Astral.coalescent_out.result >Astral.coalescence_tree.nwk')
 	os.chdir("../")
@@ -181,6 +181,9 @@ def main(args):
 	reader2 = args.input2
 	reader3 = args.input3
 	reader4 = args.input4
+	thread = args.thread
+	nb = args.bootstrap
+	model = args.model
 	get_SpeciesID(reader1)
 	print("Step1: Get each single-copy gene id and its sequences.\n")
 	single_gene_ids = get_SingleGeneID(reader2,reader3)
@@ -202,38 +205,54 @@ def main(args):
 	print("Congratulations! All tasks were finished!\n")
 
 if __name__ == "__main__":
-    begin = time.clock()
-    parser = argparse.ArgumentParser(
-    	prog="EasySpeciesTree",
-    	formatter_class=argparse.RawTextHelpFormatter,
-    	description='''
-%(prog)s [SpeciesID prefix] [SingleCopyOrtho] [Orthogroups] [all protein file]
+	begin = time.clock()
+	parser = argparse.ArgumentParser(
+		prog="EasySpeciesTree",
+		formatter_class=argparse.RawTextHelpFormatter,
+		description='''
+-------------------------------------------------------------------------------------------------------
+%(prog)s [SpeciesID prefix] [SingleCopyOrtho] [Orthogroups] [protein file] <thread> <bootstrap> <model>
 Author: Wei Dong <1369852697@qq.com>, FAFU
-Version: V1.0
-Easily construct the ML species tree with all single-copy gene's protein sequences''')
-    parser.add_argument(
-    	'-in1', '--input1', 
-    	required=True, 
-#    	dest="Prefix",
-    	help="offer the prefix of all abbreviated species id ")
-    parser.add_argument(
-    	'-in2', '--input2', 
-    	required=True, 
-#    	dest="SingleCopyOrtho",
-    	help="offer the Single-copy Orthogroups file, SingleCopyOrthogroups.txt")
-    parser.add_argument(
-    	'-in3', '--input3', 
-    	required=True, 
-#    	dest="Orthogroups",
-    	help="offer the all Orthogroups file, Orthogroups.csv")
-    parser.add_argument(
-    	'-in4', '--input4',
-    	required=True, 
-#    	dest="Proteins",
-    	help="offer all species protein sequences")
-    args = parser.parse_args()
-
-    main(args)
-    end = time.clock()
-    print("All tasks used time: %ss" % (end - begin))
+Version: v1.0
+Easily construct the ML species tree with all single-copy gene's protein sequences
+-------------------------------------------------------------------------------------------------------
+''')
+	parser.add_argument(
+		'-in1', '--input1', 
+		required=True, 
+#	 	dest="Prefix",
+		help="offer the prefix of all abbreviated species id ")
+	parser.add_argument(
+		'-in2', '--input2', 
+		required=True, 
+#	 	dest="SingleCopyOrtho",
+		help="offer the Single-copy Orthogroups file, SingleCopyOrthogroups.txt")
+	parser.add_argument(
+		'-in3', '--input3', 
+		required=True, 
+#	 	dest="Orthogroups",
+		help="offer the all Orthogroups file, Orthogroups.csv")
+	parser.add_argument(
+		'-in4', '--input4',
+		required=True, 
+#	 	dest="Proteins",
+		help="offer all species protein sequences")
+	parser.add_argument(
+		'-t', '--thread',
+		default=10, 
+#		type=int,
+		help="set the number of thread, default=10")
+	parser.add_argument(
+		'-nb', '--bootstrap',
+		default=100, 
+#		type=int,
+		help="set the number of bootstrap, default=100")
+	parser.add_argument(
+		'-m', '--model',
+		default="PROTGAMMAJTT", 
+		help="set the model of amino acid substitution, default=PROTGAMMAJTT")
+	args = parser.parse_args()
+	main(args)
+	end = time.clock()
+	print("All tasks used time: %ss" % (end - begin))
 
