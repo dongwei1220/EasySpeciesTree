@@ -237,13 +237,11 @@ Easily construct the ML species tree with all single-copy gene's protein sequenc
 		help="offer all species protein sequences")
 	parser.add_argument(
 		'-t', '--thread',
-		default=10, 
-#		type=int,
+		default="10", 
 		help="set the number of thread, default=10")
 	parser.add_argument(
 		'-nb', '--bootstrap',
-		default=100, 
-#		type=int,
+		default="100", 
 		help="set the number of bootstrap, default=100")
 	parser.add_argument(
 		'-m', '--model',
