@@ -209,7 +209,7 @@ if __name__ == "__main__":
 		formatter_class=argparse.RawTextHelpFormatter,
 		description='''
 -------------------------------------------------------------------------------------------------------
-%(prog)s [SpeciesID prefix] [SingleCopyOrtho] [Orthogroups] [protein file] <thread> <bootstrap> <model>
+%(prog)s <SpeciesID prefix> <SingleCopyOrtho> <Orthogroups> <protein file> [thread] [bootstrap] [model]
 Author: Wei Dong <1369852697@qq.com>, FAFU
 Version: v1.0
 Easily construct the ML species tree with all single-copy gene's protein sequences
