@@ -30,9 +30,6 @@ mydict1 = OrderedDict()
 mydict2 = OrderedDict()
 mydict3 = OrderedDict()
 OrthoDict = OrderedDict()
-thread = ""
-nb = ""
-model = ""
 
 # get every species abbreviated id information
 def get_SpeciesID(speciesID):
@@ -181,6 +178,7 @@ def main(args):
 	reader2 = args.input2
 	reader3 = args.input3
 	reader4 = args.input4
+	global thread,nb,model
 	thread = args.thread
 	nb = args.bootstrap
 	model = args.model
